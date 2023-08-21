@@ -5,28 +5,26 @@ import requests
 
 API_URL = 'https://jsonplaceholder.typicode.com'
 
+
 if __name__ == '__main__':
-    # Récupérer les données de tous les utilisateurs depuis l'API
-    user_data = requests.get(f"{API_URL}/users").json()
+    # Récupérer les informations des utilisateurs depuis l'API
+    user_response = requests.get(f"{API_URL}/users/").json()
 
-    # Créer un dictionnaire pour stocker les données de tous les employés
-    all_employee_data = {}
+    # Récupérer la liste de tâches pour tous les utilisateurs
+    todo_response = requests.get(f"{API_URL}/todos").json()
 
-    # Parcourir chaque utilisateur pour obtenir ses tâches et les stocker dans le dictionnaire
-    for user in user_data:
-        user_id = str(user['id'])
-        tasks_data = requests.get(f"{API_URL}/todos?userId={user_id}").json()
-
-        # Préparer les données des tâches pour l'utilisateur actuel
-        tasks_info = [
-            {"username": user['username'], "task": task['title'], "completed": task['completed']}
-            for task in tasks_data
-        ]
-
-        all_employee_data[user_id] = tasks_info
+    # Créer un dictionnaire pour regrouper les tâches par utilisateur
+    task_by_user = {}
+    for task in todo_response:
+        user_id = task['userId']
+        if user_id not in task_by_user:
+            task_by_user[user_id] = []
+        task_by_user[user_id].append({
+            "task": task['title'],
+            "completed": task['completed'],
+            "username": next(user['username'] for user in user_response if user['id'] == user_id)
+        })
 
     # Écrire les données dans un fichier JSON
     with open("todo_all_employees.json", mode='w') as json_file:
-        json.dump(all_employee_data, json_file)
-
-    print("Les données ont été exportées vers todo_all_employees.json")
+        json.dump(task_by_user, json_file)
