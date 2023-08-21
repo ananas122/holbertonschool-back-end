@@ -2,34 +2,31 @@
 """Script to export data in the JSON format."""
 import json
 import requests
-from sys import argv
 
 API_URL = 'https://jsonplaceholder.typicode.com'
 
 if __name__ == '__main__':
-    # Retrieve user ID from command line arguments
-    USER_ID = argv[1]
+    # Récupérer les données de tous les utilisateurs depuis l'API
+    user_data = requests.get(f"{API_URL}/users").json()
 
-    # Get user information from the API
-    user_response = requests.get(f"{API_URL}/users/{USER_ID}").json()
+    # Créer un dictionnaire pour stocker les données de tous les employés
+    all_employee_data = {}
 
-    # Get the list of tasks for the user from the API
-    todo_response = requests.get(f"{API_URL}/todos?userId={USER_ID}").json()
+    # Parcourir chaque user pour obtenir ses tâches et les stocker dans le dict
+    for user in user_data:
+        user_id = str(user['id'])
+        tasks_data = requests.get(f"{API_URL}/todos?userId={user_id}").json()
 
-    # Prepare data for export
-    data = {
-        USER_ID: [
-            {
+        # Préparer les données des tâches pour l'utilisateur actuel
+        tasks_info = [
+            {"username": user['username'],
                 "task": task['title'],
-                "completed": task['completed'],
-                "username": user_response['username']
-            }
-            for task in todo_response
+                "completed": task['completed']}
+            for task in tasks_data
         ]
-    }
 
-    # Write data to a JSON file
-    with open(f"{USER_ID}.json", mode='w') as json_file:
-        json.dump(data, json_file)
+        all_employee_data[user_id] = tasks_info
 
-    print(f"Data has been exported to {USER_ID}.json")
+    # Écrire les données dans un fichier JSON
+    with open("todo_all_employees.json", mode='w') as json_file:
+        json.dump(all_employee_data, json_file)

@@ -5,7 +5,6 @@ from sys import argv
 
 API_URL = 'https://jsonplaceholder.typicode.com'
 
-
 if __name__ == '__main__':
     # Récupérer l'ID de l'employé depuis les args de ligne de commande
     employee_id = argv[1]
@@ -17,7 +16,10 @@ if __name__ == '__main__':
     todo_data = requests.get(f"{API_URL}/todos?userId={employee_id}").json()
 
     # Filtrer les tâches terminées
-    completed_task_titles = [task['title'] for task in todo_data if task['completed']]
+    completed_task_titles = [
+        task['title'] for task in todo_data
+        if task['completed']
+    ]
 
     # Nom de l'employé, nombre de tâches terminées et nombre total de tâches
     employee_name = user_data["name"]
