@@ -5,7 +5,7 @@ from sys import argv
 
 
 if __name__ == '__main__':
-    URL = 'https://jsonplaceholder.typicode.com'
+    API_URL = 'https://jsonplaceholder.typicode.com'
 
     # Récupérer l'ID de l'employé depuis les arguments de ligne de commande
     employee_id = argv[1]
@@ -24,6 +24,6 @@ if __name__ == '__main__':
 
     # Afficher le résultat
     print(f"Employee {user_data['name']} is done with tasks({len(completed_tasks)}/{total_tasks}):")
-    for task in sum_tasks:
+    for task in completed_task_titles:
         print(f"    {task}")
 
