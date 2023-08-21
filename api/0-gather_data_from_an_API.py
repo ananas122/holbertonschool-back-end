@@ -1,29 +1,29 @@
 #!/usr/bin/python3
-"""script that, using this REST API, for a given employee ID"""
+"""Script that, using this REST API, for a given employee"""
 import requests
 from sys import argv
 
+API_URL = 'https://jsonplaceholder.typicode.com'
 
 if __name__ == '__main__':
-    API_URL = 'https://jsonplaceholder.typicode.com'
-
     # Récupérer l'ID de l'employé depuis les arguments de ligne de commande
     employee_id = argv[1]
 
-    # Obtenir les infos sur l'user
+    # Obtenir les informations sur l'utilisateur depuis l'API
     user_data = requests.get(f"{API_URL}/users/{employee_id}").json()
 
-    # Obtenir la liste des tâches à faire pour l'employé
+    # Obtenir la liste des tâches à faire pour l'employé depuis l'API
     todo_data = requests.get(f"{API_URL}/todos?userId={employee_id}").json()
 
     # Filtrer les tâches terminées
-    completed_task_titles = [task['title'] for task in todo_data if task['completed']]
+    completed_tasks = [task['title'] for task in todo_data if task['completed']]
 
-    # Calculer le nombre total de tâches
+    # Nom de l'employé, nombre de tâches terminées et nombre total de tâches
+    employee_name = user_data["name"]
+    num_completed_tasks = len(completed_tasks)
     total_tasks = len(todo_data)
 
-    # Afficher le résultat
-    print(f"Employee {user_data['name']} is done with tasks({len(completed_tasks)}/{total_tasks}):")
-    for task in completed_task_titles:
-        print(f"    {task}")
-
+    # Afficher les informations
+    print(f"Employee {employee_name} is done with tasks({num_completed_tasks}/{total_tasks}):")
+    for task in completed_tasks:
+        print(f"\t{task}")
