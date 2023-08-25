@@ -24,7 +24,7 @@ if __name__ == '__main__':
             "completed": task['completed'],
             "username":
                 next(user
-                    ['username'] for user in user_response if user['id'] == user_id)
+                ['username'] for user in user_response if user['id'] == user_id)
         })
 
     # Écrire les données dans un fichier JSON
