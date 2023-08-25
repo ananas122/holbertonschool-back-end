@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 """Script to export data in the CSV format"""
-import requests
 import csv
+import requests
 from sys import argv
 
 API_URL = 'https://jsonplaceholder.typicode.com'
+
 
 if __name__ == '__main__':
     # Récupérer l'ID de l'employé depuis les args de ligne de commande
