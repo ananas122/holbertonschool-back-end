@@ -22,8 +22,7 @@ if __name__ == '__main__':
         task_by_user[user_id].append({
             "task": task['title'],
             "completed": task['completed'],
-            "username": next(
-                user['username'] for user in user_response if user['id'] == user_id)
+            "username": next(user['username'] for user in user_response if user['id'] == user_id)
         })
 
     # Écrire les données dans un fichier JSON
