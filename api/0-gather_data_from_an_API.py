@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """Script that, using this REST API, for a given employee"""
+
 import requests
 from sys import argv
 
@@ -27,8 +28,9 @@ if __name__ == '__main__':
     total_tasks = len(todo_data)
 
     # Afficher les informations
-    print("Employee {} is done with tasks({}/{}):".format(
-        employee_name, num_completed_tasks, total_tasks))
+    print(
+        f"Employee {employee_name} is done with tasks({num_completed_tasks}/{total_tasks}):"
+    )
 
     for task_title in completed_task_titles:
         print(f"\t {task_title}")
